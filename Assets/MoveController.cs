@@ -54,9 +54,18 @@ public class MoveController : MonoBehaviour
 
     private void IsGroundedUpdate(Collision collision, bool value)
     {
+<<<<<<< Updated upstream
         if (collision.gameObject.tag == ("Floor"))
+=======
+        if (collision.gameObject.tag == ("Floor")
+            || collision.gameObject.tag == ("Wall"))
+>>>>>>> Stashed changes
         {
             _isGrounded = value;
         }
     }
+<<<<<<< Updated upstream
 }
+=======
+}
+>>>>>>> Stashed changes
