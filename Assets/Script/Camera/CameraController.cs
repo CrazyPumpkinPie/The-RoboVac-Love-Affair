@@ -1,13 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
+using System.IO;
 using UnityEngine;
+using UnityEngine.Windows;
 
 public class CameraController : MonoBehaviour
 {
     [SerializeField] private Transform playerTransform;
     [SerializeField] private LayerMask wallLayer;
     [SerializeField] private float hiddenStep;
-    private List<GameObject> wallInFrontOfPlayer = new List<GameObject>();
+    [SerializeField] private List<Wall> wallInFrontOfPlayer = new List<Wall>();
     private Vector3 target;
     private void Start()
     {
@@ -16,69 +19,115 @@ public class CameraController : MonoBehaviour
     private void LateUpdate()
     {
         CheckWall();
+        for(int i = 0; i < wallInFrontOfPlayer.Count; i++)
+        {
+            ChangeAlphe(wallInFrontOfPlayer[i].wall, wallInFrontOfPlayer[i].isBeetweenPlayerAndCamera, 
+                wallInFrontOfPlayer[i].wall.GetComponent<Renderer>().material, i);
+        }
     }
     private void CheckWall()
     {
         Ray ray = new Ray(transform.position, playerTransform.position - transform.position);
         List<RaycastHit> hit = new List<RaycastHit>(Physics.RaycastAll(ray, 100, wallLayer));
 
-        Debug.DrawLine(transform.position, playerTransform.position);
-        if (hit.Count != 0)
+        Debug.DrawLine(transform.position, playerTransform.position); 
+        for (int i = 0; i < hit.Count; i++)
         {
-            for (int i = 0; i < hit.Count; i++)
+            bool isHas = false;
+            for (int j = 0; j < wallInFrontOfPlayer.Count; j++)
             {
-                if (!wallInFrontOfPlayer.Contains(hit[i].collider.gameObject))
+                if (wallInFrontOfPlayer[j].wall == hit[i].collider.gameObject)
                 {
-                    wallInFrontOfPlayer.Add(hit[i].collider.gameObject);
-                    StartCoroutine(Hidden(hit[i].collider.gameObject.GetComponent<Renderer>().material));
+                    isHas = true;
+                    break;
                 }
             }
-        }
-        if (wallInFrontOfPlayer.Count != 0)
-        {
-            for (int i = 0; i < wallInFrontOfPlayer.Count; i++)
+            if (!isHas)
             {
-                bool hasItem = false;
-                for(int  j = 0; j < hit.Count; j++)
-                {
-                    if (wallInFrontOfPlayer[i] == hit[j].collider.gameObject)
-                    {
-                        hasItem = true;
-                    }
-                }
-                if (!hasItem)
-                {
-                    StartCoroutine(Visible(wallInFrontOfPlayer[i].GetComponent<Renderer>().material));
-                    wallInFrontOfPlayer.RemoveAt(i);
-                    i--;
-                }
+                wallInFrontOfPlayer.Add(new Wall(hit[i].collider.gameObject, true));
             }
         }
 
-        
-    }
-    IEnumerator Hidden(Material _material)
-    {
-        for (float i = _material.color.a; i >= 0;)
+        for(int i = 0; i < wallInFrontOfPlayer.Count; i++)
         {
-            i -= hiddenStep / 100;
-            i = Mathf.Clamp(i, 0f, 1f);
-            Color _color = _material.color;
-            _color.a = i;
-            _material.color = _color;
-            yield return new WaitForSeconds(0.1f);
+            bool ishas = false;
+            for(int j =0; j < hit.Count; j++)
+            {
+                if (wallInFrontOfPlayer[i].wall == hit[j].collider.gameObject)
+                {
+                    ishas = true;
+                }
+            }
+            if (!ishas)
+            {
+                wallInFrontOfPlayer[i].isBeetweenPlayerAndCamera = false;
+            }
+        }
+
+
+    }
+
+
+    private void ChangeAlphe(GameObject _object, bool _isBeetweenPlayerAndCamera, Material _material, int index)
+    {
+        float step = hiddenStep / 100;
+        Color color = _material.color;
+        if(!_isBeetweenPlayerAndCamera && color.a == 1f)
+        {
+            wallInFrontOfPlayer.RemoveAt(index);
+            return;
+        }
+        else if (_isBeetweenPlayerAndCamera && color.a > 0){
+            color.a -= step;
+            color.a = Mathf.Clamp(color.a, 0f, 1f);
+            _material.color = color;
+            return;
+        }
+        else if(!_isBeetweenPlayerAndCamera && color.a < 1f)
+        {
+            color.a += step;
+            color.a = Mathf.Clamp(color.a, 0f, 1f);
+            _material.color = color;
+            return;
         }
     }
-    IEnumerator Visible(Material _material)
+    //IEnumerator Hidden(Material _material)
+    //{
+    //    for (float i = _material.color.a; i >= 0;)
+    //    {
+    //        i -= hiddenStep / 100;
+    //        i = Mathf.Clamp(i, 0f, 1f);
+    //        Color _color = _material.color;
+    //        _color.a = i;
+    //        _material.color = _color;
+    //        yield return new WaitForSeconds(0.1f);
+    //    }
+    //}
+    //IEnumerator Visible(Material _material)
+    //{
+    //    for (float i = 0; i <= 100;)
+    //    {
+    //        i += hiddenStep / 100;
+    //        i = Mathf.Clamp(i, 0f, 1f);
+    //        Color _color = _material.color;
+    //        _color.a = i;
+    //        _material.color = _color;
+    //        yield return new WaitForSeconds(0.1f);
+    //    }
+    //}
+
+    class Wall
     {
-        for (float i = 0; i <= 100;)
+        public GameObject wall;
+        public bool isBeetweenPlayerAndCamera;
+        public Wall()
         {
-            i += hiddenStep / 100;
-            i = Mathf.Clamp(i, 0f, 1f);
-            Color _color = _material.color;
-            _color.a = i;
-            _material.color = _color;
-            yield return new WaitForSeconds(0.1f);
+
+        }
+        public Wall(GameObject _wall, bool _isBeetweenPlayerAndCamera)
+        {
+            wall = _wall; 
+            isBeetweenPlayerAndCamera = _isBeetweenPlayerAndCamera;
         }
     }
 }
