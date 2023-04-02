@@ -1,15 +1,13 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
     [SerializeField] private Transform playerTransform;
-    [SerializeField] private float speed;
     [SerializeField] private LayerMask wallLayer;
-    [SerializeField] private List<GameObject> wallInFrontOfPlayer;
-    //[Header("Bounds")]
-    //[SerializeField] private float leftBound;
-    //[SerializeField] private float rightBound;
+    [SerializeField] private float hiddenStep;
+    private List<GameObject> wallInFrontOfPlayer = new List<GameObject>();
     private Vector3 target;
     private void Start()
     {
@@ -17,12 +15,9 @@ public class CameraController : MonoBehaviour
     }
     private void LateUpdate()
     {
-        //Vector3 move = Vector3.Lerp(transform.position, playerTransform.position + target, Time.deltaTime * speed);
-        //move.x = Mathf.Clamp(move.x, leftBound, rightBound);
-        //transform.position = move;
-        checkWall();
+        CheckWall();
     }
-    private void checkWall()
+    private void CheckWall()
     {
         Ray ray = new Ray(transform.position, playerTransform.position - transform.position);
         List<RaycastHit> hit = new List<RaycastHit>(Physics.RaycastAll(ray, 100, wallLayer));
@@ -35,7 +30,7 @@ public class CameraController : MonoBehaviour
                 if (!wallInFrontOfPlayer.Contains(hit[i].collider.gameObject))
                 {
                     wallInFrontOfPlayer.Add(hit[i].collider.gameObject);
-                    hit[i].collider.gameObject.GetComponent<MeshRenderer>().enabled = false;
+                    StartCoroutine(Hidden(hit[i].collider.gameObject.GetComponent<Renderer>().material));
                 }
             }
         }
@@ -53,11 +48,37 @@ public class CameraController : MonoBehaviour
                 }
                 if (!hasItem)
                 {
-                    wallInFrontOfPlayer[i].GetComponent<MeshRenderer>().enabled = true;
+                    StartCoroutine(Visible(wallInFrontOfPlayer[i].GetComponent<Renderer>().material));
                     wallInFrontOfPlayer.RemoveAt(i);
                     i--;
                 }
             }
+        }
+
+        
+    }
+    IEnumerator Hidden(Material _material)
+    {
+        for (float i = _material.color.a; i >= 0;)
+        {
+            i -= hiddenStep / 100;
+            i = Mathf.Clamp(i, 0f, 1f);
+            Color _color = _material.color;
+            _color.a = i;
+            _material.color = _color;
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+    IEnumerator Visible(Material _material)
+    {
+        for (float i = 0; i <= 100;)
+        {
+            i += hiddenStep / 100;
+            i = Mathf.Clamp(i, 0f, 1f);
+            Color _color = _material.color;
+            _color.a = i;
+            _material.color = _color;
+            yield return new WaitForSeconds(0.1f);
         }
     }
 }
