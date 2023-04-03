@@ -33,7 +33,7 @@ public class PlayPreviewScript : MonoBehaviour
         StartCoroutine(ShowNext());
     }
 
-    IEnumerator ChangeColor(float targetAlpha, float duration)
+    IEnumerator ChangeColor(float targetAlpha, float duration, int index)
     {
         if (index < blackSquares.Count)
         {
@@ -63,16 +63,16 @@ public class PlayPreviewScript : MonoBehaviour
         }
         else
         {
-
-            StartCoroutine(ChangeColor(0, changeColorSpeed));
+            Color color = blackSquares[index].color;
+            StartCoroutine(ChangeColor(0, changeColorSpeed, index));
             while (blackSquares[index].color.a > 0)
             {
                  yield return null;
             }
-            Color color = blackSquares[index].color;
-            if (color.a == 0)
-            if (index < blackSquares.Count) 
-                    index++;
+            if (index < blackSquares.Count)
+            {
+                index++;
+            }
             Debug.Log($"Index was increased");
             Debug.Log($"Waiting {delayTime} seconds before showing the next black square");
             yield return new WaitForSeconds(delayTime);
