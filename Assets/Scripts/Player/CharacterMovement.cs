@@ -123,7 +123,7 @@ public class CharacterMovement : MonoBehaviour
         if (!RotationEnabled || !_isMoving)
             return;
 
-        _rotationTransform.rotation = Quaternion.Slerp(transform.rotation, 
+        _rotationTransform.localRotation = Quaternion.Slerp(transform.rotation, 
             Quaternion.Euler(0f, Mathf.Atan2(_movementInput.y, _movementInput.x) * Mathf.Rad2Deg - 90f, 0f), _rotationSnapiness);
     }
 
