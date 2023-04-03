@@ -6,15 +6,16 @@ TagManager:
   tags:
   - Floor
   - Wall
+  - Scin
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Obstacle
+  - 
   - Water
   - UI
-  - Player
-  - Wall
+  - 
+  - 
   - 
   - 
   - 
@@ -43,6 +44,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Player
-    uniqueID: 3580698219
+  - name: Menu
+    uniqueID: 2323753419
     locked: 0
