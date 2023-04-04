@@ -78,7 +78,7 @@ public class CharacterMovement : MonoBehaviour
     {
         if (MovementEnabled && (_isMoving || _dashCooldownTimer > 0f))
         {
-           _currentSpeed = Mathf.Lerp(_currentSpeed, _moveSpeed, _snapiness) * (_dashTimer > 0f ? _dashSpeedMultiplier : 1f); // if dashing - multiply speed by dash multiplier
+           _currentSpeed = Mathf.Lerp(_currentSpeed, _moveSpeed, _snapiness * Time.deltaTime) * (_dashTimer > 0f ? _dashSpeedMultiplier : 1f); // if dashing - multiply speed by dash multiplier
 
             Vector2 direction = _dashCooldownTimer > 0f ? _dashDirection : _movementInput; // use dash direction if we are dashing
 
@@ -87,7 +87,7 @@ public class CharacterMovement : MonoBehaviour
             _characterController.Move(new Vector3(motion.x, 0f, motion.y));
         }
         else
-            _currentSpeed = Mathf.Lerp(_currentSpeed, 0f, _snapiness);
+            _currentSpeed = Mathf.Lerp(_currentSpeed, 0f, _snapiness * Time.deltaTime);
     }
 
     void UpdateDash()
@@ -123,8 +123,10 @@ public class CharacterMovement : MonoBehaviour
         if (!RotationEnabled || !_isMoving)
             return;
 
-        _rotationTransform.localRotation = Quaternion.Slerp(transform.rotation, 
-            Quaternion.Euler(0f, Mathf.Atan2(_movementInput.y, _movementInput.x) * Mathf.Rad2Deg - 90f, 0f), _rotationSnapiness);
+        var lookVector = _relativeAngle * new Vector3(_movementInput.x, 0f, _movementInput.y);
+        var targetRotation = Quaternion.LookRotation(lookVector, Vector3.up);
+
+        _rotationTransform.localRotation = targetRotation;
     }
 
     void UpdateGrounded()
