@@ -196,7 +196,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1289747218}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -314,7 +314,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 0}
+  m_Texture: {fileID: 2800000, guid: 13e935fc5b9ccc643b4c9214c708fc78, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -346,8 +346,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -228.02, y: 324.3831}
-  m_SizeDelta: {x: 1469.6, y: 453.7662}
+  m_AnchoredPosition: {x: 67, y: 0.000025034}
+  m_SizeDelta: {x: 2191.295, y: 1095.5692}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &423248239
 GameObject:
@@ -696,7 +696,7 @@ GameObject:
   - component: {fileID: 663351200}
   - component: {fileID: 663351199}
   m_Layer: 5
-  m_Name: BlackSquare_4
+  m_Name: BlackSquare_5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -750,7 +750,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1289747218}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1228,6 +1228,7 @@ MonoBehaviour:
   exitButton: {fileID: 423248239}
   blackSquares:
   - {fileID: 331570819}
+  - {fileID: 1709718764}
   - {fileID: 2078194553}
   - {fileID: 1948853000}
   - {fileID: 1193479200}
@@ -1494,7 +1495,7 @@ GameObject:
   - component: {fileID: 1193479201}
   - component: {fileID: 1193479200}
   m_Layer: 5
-  m_Name: BlackSquare_3
+  m_Name: BlackSquare_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1548,7 +1549,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1289747218}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1585,6 +1586,7 @@ RectTransform:
   m_Children:
   - {fileID: 2123078842}
   - {fileID: 331570821}
+  - {fileID: 1709718763}
   - {fileID: 2078194555}
   - {fileID: 1948853002}
   - {fileID: 1193479202}
@@ -1698,7 +1700,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.49803922}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1740,6 +1742,79 @@ RectTransform:
   m_AnchoredPosition: {x: -0.0034179688, y: -1.3168945}
   m_SizeDelta: {x: -0.006591797, y: 2.633789}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1709718762
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1709718763}
+  - component: {fileID: 1709718765}
+  - component: {fileID: 1709718764}
+  m_Layer: 5
+  m_Name: BlackSquare_1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1709718763
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1709718762}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1289747218}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -3, y: 0.000025034}
+  m_SizeDelta: {x: 2191.295, y: 1095.5692}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1709718764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1709718762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Texture: {fileID: 2800000, guid: 7637e551d7fbfdc48966caead5acc1bf, type: 3}
+  m_UVRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+--- !u!222 &1709718765
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1709718762}
+  m_CullTransparentMesh: 1
 --- !u!1 &1721279755
 GameObject:
   m_ObjectHideFlags: 0
@@ -1825,7 +1900,7 @@ GameObject:
   - component: {fileID: 1770835606}
   - component: {fileID: 1770835605}
   m_Layer: 5
-  m_Name: BlackSquare_5
+  m_Name: BlackSquare_6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1879,12 +1954,12 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1289747218}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 734.8083, y: 2.418}
-  m_SizeDelta: {x: 456.0534, y: 1097.7019}
+  m_AnchoredPosition: {x: 734.8083, y: -7.3506}
+  m_SizeDelta: {x: 456.0534, y: 1078.1648}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1948852999
 GameObject:
@@ -1898,7 +1973,7 @@ GameObject:
   - component: {fileID: 1948853001}
   - component: {fileID: 1948853000}
   m_Layer: 5
-  m_Name: BlackSquare_2
+  m_Name: BlackSquare_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1952,7 +2027,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1289747218}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1971,7 +2046,7 @@ GameObject:
   - component: {fileID: 2078194554}
   - component: {fileID: 2078194553}
   m_Layer: 5
-  m_Name: BlackSquare_1
+  m_Name: BlackSquare_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2025,7 +2100,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1289747218}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
