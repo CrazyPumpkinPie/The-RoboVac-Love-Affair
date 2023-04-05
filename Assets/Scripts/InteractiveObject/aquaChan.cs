@@ -16,7 +16,7 @@ public class aquaChan : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.CompareTag("Player")){
-
+            Debug.Log(other.gameObject.name);
             inventory = other.gameObject.GetComponent<Inventory>();
             if (type == AquaType.water)
             {
