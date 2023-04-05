@@ -98,7 +98,7 @@ public class CharacterMovement : MonoBehaviour
         if (_dashTimer <= 0f && _isMoving) // update dash direction only if we are not dashing
             _dashDirection = _movementInput;
 
-        if (!DashEnabled || _dashCooldownTimer > 0f)
+        if (!DashEnabled || _dashCooldownTimer > 0f || _dashTimer > 0f)
             return;
 
         if (_dashInput)
