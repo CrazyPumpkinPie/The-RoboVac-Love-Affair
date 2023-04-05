@@ -7,6 +7,7 @@ TagManager:
   - Floor
   - Wall
   - Square
+  - FinalPreviewController
   layers:
   - Default
   - TransparentFX

@@ -4,33 +4,49 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class PlayPreviewScript : MonoBehaviour
+public class FinalPreviewScript : MonoBehaviour
 {
     [Header("Components")]
-    [SerializeField] GameObject startComix;
-    [SerializeField] GameObject pressAnyKeyLabel;
-    [SerializeField] GameObject playButton;
-    [SerializeField] GameObject exitButton;
+    [SerializeField] GameObject finalComix;
+    [SerializeField] TitlesScript titlesScript;
     [SerializeField] List<RawImage> blackSquares = new List<RawImage>();
 
     [Header("Variables")]
     [SerializeField] private int index = 0;
     [SerializeField] private float delayTime = 2f;
     [SerializeField] private float changeColorSpeed = 0.4f;
+    [SerializeField] private float shoutDownComixSpeed = 0.4f;
+
+    [Header("Trigger")]
+    [SerializeField] GameObject trigger;
+
 
     public void Update()
     {
-        if (Input.anyKey && pressAnyKeyLabel.gameObject.activeSelf)
-        {
-            int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
-            SceneManager.LoadScene(nextSceneIndex);
-        }
+        if (trigger.activeSelf)
+            PlayPreview();
     }
 
     public void PlayPreview()
     {
-        startComix.SetActive(true);
-        StartCoroutine(ShowNext());
+        finalComix.SetActive(true);
+        StartCoroutine(ShowNextCoroutine());
+    }
+
+    public IEnumerator ShoutDownComixCoroutine()
+    {
+        float startAlpha = finalComix.GetComponent<RawImage>().color.a;
+        float time = 0f;
+
+        while (time < shoutDownComixSpeed)
+        {
+            time += Time.deltaTime;
+            float currentAlpha = Mathf.Lerp(startAlpha, 0f, time / shoutDownComixSpeed);
+            Color color = finalComix.GetComponent<RawImage>().color;
+            color.a = currentAlpha;
+            finalComix.GetComponent<RawImage>().color = color;
+            yield return null;
+        }
     }
 
     IEnumerator ChangeColor(float targetAlpha, float duration, int index)
@@ -52,11 +68,8 @@ public class PlayPreviewScript : MonoBehaviour
             }
         }
     }
-    private void ShowLabelPressAnyKey()
-    {
-        pressAnyKeyLabel.SetActive(true);
-    }
-    IEnumerator ShowNext()
+
+    IEnumerator ShowNextCoroutine()
     {
 
         if (index == blackSquares.Count - 1)
@@ -66,25 +79,26 @@ public class PlayPreviewScript : MonoBehaviour
             {
                 yield return null;
             }
-            
             StopAllCoroutines();
-            Invoke("ShowLabelPressAnyKey", 0.2f);
+            StartCoroutine(ShoutDownComixCoroutine());
+            StopAllCoroutines();
+            titlesScript.ShowTitles();
         }
         else
         {
             StartCoroutine(ChangeColor(0, changeColorSpeed, index));
             while (blackSquares[index].color.a > 0)
             {
-                 yield return null;
+                yield return null;
             }
             if (index < blackSquares.Count - 1)
             {
                 index++;
             }
-            Debug.Log($"Index was increased");
+            Debug.Log($"Index was increased to {index}");
             Debug.Log($"Waiting {delayTime} seconds before showing the next black square");
             yield return new WaitForSeconds(delayTime);
-            yield return StartCoroutine(ShowNext());
+            yield return StartCoroutine(ShowNextCoroutine());
         }
 
     }
