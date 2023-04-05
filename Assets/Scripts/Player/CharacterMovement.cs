@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
@@ -7,7 +8,7 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField] float _moveSpeed = 5f;
     [SerializeField] float _moveThreshold = .05f;
     [SerializeField] [Range(0, 1)] float _snapiness = .8f;
-    [SerializeField] [Range(0, 1)] float _rotationSnapiness = .6f;
+    //[SerializeField] [Range(0, 1)] float _rotationSnapiness = .6f;
     [SerializeField] Transform _rotationTransform;
 
     float _currentSpeed = 0f;
@@ -17,8 +18,8 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField] float _dashTime = .5f;
     [SerializeField] float _dashCooldown = .6f;
 
-    Vector3 _dashDirection;
-    float _dashTimer = 0f;
+    Vector3 _dashDirection = Vector3.forward;
+    bool _isDashing = false;
     float _dashCooldownTimer = 0f;
 
     [Header("Jump")]
@@ -62,11 +63,13 @@ public class CharacterMovement : MonoBehaviour
     private void Awake()
     {
         _characterController = GetComponent<CharacterController>();
-        _dashDirection = _rotationTransform.forward;
     }
 
     void Update()
     {
+        if (_isMoving && !_isDashing)
+            _dashDirection = Quaternion.Euler(0f, 0f, _relativeAngle) * _movementInput;
+
         UpdateDash();
         UpdateMovement();
         UpdateRotation();
@@ -76,35 +79,29 @@ public class CharacterMovement : MonoBehaviour
 
     void UpdateMovement()
     {
-        if (MovementEnabled && (_isMoving || _dashCooldownTimer > 0f))
+        if (MovementEnabled && _isMoving && !_isDashing)
         {
-           _currentSpeed = Mathf.Lerp(_currentSpeed, _moveSpeed, _snapiness * Time.deltaTime) * (_dashTimer > 0f ? _dashSpeedMultiplier : 1f); // if dashing - multiply speed by dash multiplier
+           _currentSpeed = Mathf.Lerp(_currentSpeed, _moveSpeed, _snapiness * Time.deltaTime);
 
-            Vector2 direction = _dashCooldownTimer > 0f ? _dashDirection : _movementInput; // use dash direction if we are dashing
-
-            Vector2 motion = Quaternion.Euler(0f, 0f, _relativeAngle) * direction * _currentSpeed * Time.deltaTime;
+            Vector2 motion = Quaternion.Euler(0f, 0f, _relativeAngle) * _movementInput * _currentSpeed * Time.deltaTime;
 
             _characterController.Move(new Vector3(motion.x, 0f, motion.y));
         }
-        else
+        else if (!_isDashing)
             _currentSpeed = Mathf.Lerp(_currentSpeed, 0f, _snapiness * Time.deltaTime);
     }
 
     void UpdateDash()
     {
-        _dashCooldownTimer -= Mathf.Min(_dashCooldownTimer, Time.deltaTime);
-        _dashTimer -= Mathf.Min(_dashTimer, Time.deltaTime);
+        _dashCooldownTimer -= Time.deltaTime;
 
-        if (_dashTimer <= 0f && _isMoving) // update dash direction only if we are not dashing
-            _dashDirection = _movementInput;
-
-        if (!DashEnabled || _dashCooldownTimer > 0f || _dashTimer > 0f)
+        if (!DashEnabled || _isDashing || _dashCooldownTimer > 0f)
             return;
 
         if (_dashInput)
         {
-            _dashTimer += _dashTime;
             _dashCooldownTimer += _dashCooldown;
+            StartCoroutine(ApplyDash());
         }
     }
 
@@ -137,6 +134,22 @@ public class CharacterMovement : MonoBehaviour
             _yVelocity = -2f;
         else
             _yVelocity += Physics.gravity.y * _gravityMultiplier * Time.deltaTime;
+    }
+
+    IEnumerator ApplyDash()
+    {
+        var startTime = Time.time;
+
+        _isDashing = true;
+
+        while (Time.time < startTime + _dashTime)
+        {
+            _characterController.Move(_dashDirection * _moveSpeed * _dashSpeedMultiplier * Time.deltaTime);
+
+            yield return null;
+        }
+
+        _isDashing = false;
     }
 
     public void ApplyJump(float distance)
