@@ -23,6 +23,7 @@ public class FinalPreviewScript : MonoBehaviour
 
     public void Update()
     {
+        trigger = GameObject.FindGameObjectWithTag("Trigger");
         if (trigger.activeSelf)
             PlayPreview();
     }
