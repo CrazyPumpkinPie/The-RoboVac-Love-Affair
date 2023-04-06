@@ -25,7 +25,7 @@ public class aquaChan : MonoBehaviour
                     transform.localScale -= new Vector3(f, f, f);
                     inventory.Water += suckedWaterForce * Time.deltaTime;
                 }
-                if (transform.localScale.x <= minSizeToDestroy)
+                if (transform.localScale.x <= minSizeToDestroy || transform.localScale.y <= minSizeToDestroy)
                 {
                     Destroy(gameObject);
                 }
@@ -38,7 +38,7 @@ public class aquaChan : MonoBehaviour
                     transform.localScale -= new Vector3(f, f, f);
                     inventory.Water -= suckedWaterForce * Time.deltaTime;
                 }
-                if (transform.localScale.x <= minSizeToDestroy)
+                if (transform.localScale.x <= minSizeToDestroy || transform.localScale.y <= minSizeToDestroy)
                 {
                     Destroy(gameObject);
                 }
