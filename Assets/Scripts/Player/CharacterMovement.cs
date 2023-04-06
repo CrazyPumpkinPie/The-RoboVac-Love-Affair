@@ -1,6 +1,13 @@
 using System.Collections;
 using UnityEngine;
 
+public enum EAbility
+{
+    Walk = 0,
+    Jump,
+    Dash
+}
+
 [RequireComponent(typeof(CharacterController))]
 public class CharacterMovement : MonoBehaviour
 {
@@ -161,5 +168,15 @@ public class CharacterMovement : MonoBehaviour
     float GetJumpForce(float distance)
     {
         return Mathf.Sqrt(distance * -2 * Physics.gravity.y * _gravityMultiplier);
+    }
+
+    public void ToggleJump(bool value)
+    {
+        JumpEnabled = value;
+    }
+
+    public void ToggleDash(bool value)
+    {
+        DashEnabled = value;
     }
 }

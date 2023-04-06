@@ -8,18 +8,8 @@ public class DetectableTarget : MonoBehaviour
     {
         TargetsManager.instance.Register(this);
     }
-    
-    private void OnEnable()
-    {
-        TargetsManager.instance.Register(this);
-    }
 
     private void OnDestroy()
-    {
-        TargetsManager.instance.Deregister(this);
-    }
-
-    private void OnDisable()
     {
         TargetsManager.instance.Deregister(this);
     }
