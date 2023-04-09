@@ -64,7 +64,6 @@ public class FinalPreviewScript : MonoBehaviour
                 Color color = blackSquares[index].color;
                 color.a = currentAlpha;
                 blackSquares[index].color = color;
-                Debug.Log($"Color was changed");
                 yield return null;
             }
         }
