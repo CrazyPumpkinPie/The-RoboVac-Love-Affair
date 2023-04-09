@@ -1,21 +1,14 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Data.SqlTypes;
-using System.IO;
 using UnityEngine;
-using UnityEngine.Windows;
 
-public class CameraController : MonoBehaviour
+public class WallDetect : MonoBehaviour
 {
-    [SerializeField] private Transform playerTransform;
     [SerializeField] private LayerMask wallLayer;
     [SerializeField] private float hiddenStep;
+    [SerializeField] private float radius;
+    [SerializeField] private float maxDistance;
+    [SerializeField] private Vector3 target;
     [SerializeField] private List<Wall> wallInFrontOfPlayer = new List<Wall>();
-    private Vector3 target;
-    private void Start()
-    {
-        target = transform.position - playerTransform.position;
-    }
     private void LateUpdate()
     {
         CheckWall();
@@ -27,10 +20,9 @@ public class CameraController : MonoBehaviour
     }
     private void CheckWall()
     {
-        Ray ray = new Ray(transform.position, playerTransform.position - transform.position);
-        List<RaycastHit> hit = new List<RaycastHit>(Physics.RaycastAll(ray, 100, wallLayer));
+        List<RaycastHit> hit = new List<RaycastHit>(
+            Physics.SphereCastAll(transform.position + Vector3.forward + target, radius, Vector3.forward, maxDistance, wallLayer));
 
-        Debug.DrawLine(transform.position, playerTransform.position); 
         for (int i = 0; i < hit.Count; i++)
         {
             bool isHas = false;
@@ -90,6 +82,13 @@ public class CameraController : MonoBehaviour
             _material.color = color;
             return;
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position + Vector3.forward + target, radius);
+        Gizmos.DrawRay(transform.position + Vector3.forward + target, Vector3.forward * maxDistance);
     }
     //IEnumerator Hidden(Material _material)
     //{
