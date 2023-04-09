@@ -492,7 +492,7 @@ MonoBehaviour:
   rectTransform: {fileID: 318171296}
   blackScreen: {fileID: 1797320621}
   canvas: {fileID: 1146110493}
-  speed: 0.1
+  speed: 0.06
   blackScreenAppearSpeed: 2
   textHeight: 0
   canvasHeight: 0
