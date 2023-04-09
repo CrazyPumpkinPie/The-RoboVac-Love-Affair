@@ -1,51 +1,41 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class TitlesScript : MonoBehaviour
 {
     [Header("Components")]
     [SerializeField] private Text titles;
+    [SerializeField] private RectTransform target;
+    [SerializeField] private GameObject finalLabel;
     [SerializeField] private RectTransform rectTransform;
     [SerializeField] private RawImage blackScreen;
     [SerializeField] private Canvas canvas;
 
     [Header("Variables")]
-    [SerializeField] private float speed = 0.4f;
+    [SerializeField] private float speedOfTitles = 0.2f;
     [SerializeField] private float blackScreenAppearSpeed = 2f;
-    [SerializeField] private float textHeight;
-    [SerializeField] private float canvasHeight;
-    [SerializeField] private bool isMoving = true;
+    [SerializeField] private float finalLabelAppearSpeed = 1f;
+    [SerializeField] private int mainMenuSceneBuildIndex = 0;
     void Start()
     {
         rectTransform = titles.GetComponent<RectTransform>();
-        textHeight = rectTransform.rect.height;
-        canvasHeight = canvas.GetComponent<RectTransform>().rect.height;
     }
 
+    public void ReturnToMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
     public void ShowTitles()
     {
-        StartCoroutine(MoveTitlesCoroutine());
-    }
+        rectTransform.position = Vector3.MoveTowards(rectTransform.position, 
+            target.position, speedOfTitles);
 
-    IEnumerator MoveTitlesCoroutine()
-    {
-        var targetPosition = new Vector3(rectTransform.position.x, canvasHeight + textHeight / 2, rectTransform.position.z);
-        
-        while (isMoving)
+        if (rectTransform.position == target.position)
         {
-            float step = speed * Time.deltaTime;
-            rectTransform.position = Vector3.MoveTowards(rectTransform.position, targetPosition, step);
-
-            if (rectTransform.position == targetPosition)
-            {
-                isMoving = false;
-                StartCoroutine(ShowBlackScreenCoroutine());
-                Debug.Log($"Coroutine with titles is stop");
-            }
-
-            yield return null;
+            StartCoroutine(ShowBlackScreenCoroutine());
         }
     }
 
@@ -62,6 +52,28 @@ public class TitlesScript : MonoBehaviour
             color.a = currentAlpha;
             blackScreen.GetComponent<RawImage>().color = color;
             yield return null;
+        }
+
+        StartCoroutine(ShowFinalLabelCoroutine());
+    }
+
+    IEnumerator ShowFinalLabelCoroutine()
+    {
+        float startAlpha = finalLabel.GetComponent<Text>().color.a;
+        float time = 0f;
+        finalLabel.SetActive(true);
+        while (time < finalLabelAppearSpeed)
+        {
+            time += Time.deltaTime;
+            float currentAlpha = Mathf.Lerp(startAlpha, 1f, time / blackScreenAppearSpeed);
+            Color color = finalLabel.GetComponent<Text>().color;
+            color.a = currentAlpha;
+            finalLabel.GetComponent<Text>().color = color;
+            yield return null;
+        }
+        if (Input.anyKey && finalLabel.gameObject.activeSelf)
+        {
+            SceneManager.LoadScene(mainMenuSceneBuildIndex);
         }
     }
 
