@@ -31,11 +31,14 @@ public class TitlesScript : MonoBehaviour
 
     IEnumerator MoveTitlesCoroutine()
     {
+        var targetPosition = new Vector3(rectTransform.position.x, canvasHeight + textHeight / 2, rectTransform.position.z);
+        
         while (isMoving)
         {
-            rectTransform.position += new Vector3(0, speed * Time.deltaTime, 0);
+            float step = speed * Time.deltaTime;
+            rectTransform.position = Vector3.MoveTowards(rectTransform.position, targetPosition, step);
 
-            if (rectTransform.position.y > canvasHeight + textHeight/2)
+            if (rectTransform.position == targetPosition)
             {
                 isMoving = false;
                 StartCoroutine(ShowBlackScreenCoroutine());
